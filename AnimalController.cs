@@ -61,7 +61,7 @@ namespace Mutanium
         public float maxWalkingDistance = 25f;
 
         /// <summary>
-        /// Distance from which to start the attack.
+        /// Distance from which to start the attack. Must be less or equal than activeDistane.
         /// </summary>
         public float attackingDistance = 20.0f;
 
@@ -248,7 +248,7 @@ namespace Mutanium
         }
 
         /// <summary>
-        /// Coroutine that generates next movement and its duration.
+        /// Coroutine that generates the next movement and its duration.
         /// </summary>
         IEnumerator GetNextMovement()
         {
@@ -341,26 +341,12 @@ namespace Mutanium
             OnDie();
         }
 
+        /// <summary>
+        /// Called when animal health becomes zero.
+        /// </summary>
         void OnDie()
         {
             Destroy(gameObject, 5f);
-        }
-
-        void OnDrawGizmos()
-        {
-            Color c = Color.yellow;
-            c.a = 0.5f;
-
-            Gizmos.color = c;
-            Gizmos.DrawSphere(transform.position, currentOutlookDistance);
-
-            if (currentState == AnimalState.ATTACK)
-            {
-                c = Color.red;
-                c.a = 0.5f;
-                Gizmos.color = c;
-                Gizmos.DrawSphere(transform.position, attackingDistance);
-            }
         }
     }
 }
