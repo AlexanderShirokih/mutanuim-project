@@ -11,7 +11,7 @@ namespace Mutanium
     /// </summary>
     public enum AnimalState
     {
-        IDLE, WALKING, ATTACK, DEFEND, CHASING, DYING
+        IDLE, ATTACK, DEFEND, WALKING, CHASING, DYING
     };
 
     /// <summary>
@@ -35,7 +35,6 @@ namespace Mutanium
         /// <summary>
         /// Current target object to attack or for defending 
         /// </summary>
-        [SerializeField]
         private Transform target;
         /// <summary>
         /// The number frames to skip. Three for process one of three frames. 
@@ -82,7 +81,7 @@ namespace Mutanium
         /// <summary>
         /// Extention multiplier of the outlook when animal in the attacking state
         /// </summary>
-        public float attackingOutlookScale = 1.5f; 
+        public float attackingOutlookScale = 1.5f;
 
         void Start()
         {
@@ -202,7 +201,7 @@ namespace Mutanium
             if (state != currentState && currentCoroutine != null)
                 StopCoroutine(currentCoroutine);
 
-            anim.SetInteger("state", GetStateId(state));
+            anim.SetInteger("state", (int)state);
             currentState = state;
             currentOutlookDistance = activeDistance;
 
@@ -226,24 +225,6 @@ namespace Mutanium
             else if (state == AnimalState.DYING)
             {
                 currentCoroutine = StartCoroutine(DyingCoroutine());
-            }
-        }
-
-        /// <summary>
-        /// Returns id of the AnimalState
-        /// </summary>
-        /// <returns>The state parameter.</returns>
-        /// <param name="state">State.</param>
-        private int GetStateId(AnimalState state)
-        {
-            switch (state)
-            {
-                case AnimalState.ATTACK: return 1;
-                case AnimalState.DEFEND: return 2;
-                case AnimalState.WALKING: return 3;
-                case AnimalState.CHASING: return 4;
-                case AnimalState.DYING: return 5;
-                default: return 0;
             }
         }
 

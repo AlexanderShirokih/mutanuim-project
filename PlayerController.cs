@@ -1,28 +1,33 @@
 ﻿using UnityEngine;
-
-public class PlayerController : MonoBehaviour
+namespace Mutanium
 {
-    private Rigidbody mRigidbody;
-
-    public float rotationSpeed = 5f;
-
-    private Vector3 moveDir;
-
-    public float speed = 10f;
-    void Start()
+    public class PlayerController : MonoBehaviour
     {
-        mRigidbody = GetComponent<Rigidbody>();
-        moveDir = Vector3.forward;
-    }
+        private HumanController humanController;
+        private Rigidbody mRigidbody;
 
-    void Update()
-    {
-        var h = Input.GetAxis("Horizontal");
-        var v = Input.GetAxis("Vertical");
+        public float rotationSpeed = 5f;
 
-        moveDir.Set(h, 0, v);
-        moveDir = moveDir.normalized * speed * Time.deltaTime;
+        private Vector3 moveDir;
 
-        mRigidbody.MovePosition(transform.position + moveDir);
+        public float speed = 10f;
+
+        void Start()
+        {
+            humanController = GetComponent<HumanController>();
+            mRigidbody = GetComponent<Rigidbody>();
+            moveDir = Vector3.forward;
+        }
+
+        void Update()
+        {
+            var h = Input.GetAxis("Horizontal");
+            var v = Input.GetAxis("Vertical");
+
+            moveDir.Set(h, 0, v);
+            moveDir = moveDir.normalized * speed * Time.deltaTime;
+
+            mRigidbody.MovePosition(transform.position + moveDir);
+        }
     }
 }
