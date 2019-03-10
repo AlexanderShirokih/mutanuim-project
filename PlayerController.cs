@@ -1,4 +1,7 @@
 ﻿using UnityEngine;
+
+using Mutanium.Human;
+
 namespace Mutanium
 {
     public class PlayerController : MonoBehaviour
@@ -17,6 +20,8 @@ namespace Mutanium
             humanController = GetComponent<HumanController>();
             mRigidbody = GetComponent<Rigidbody>();
             moveDir = Vector3.forward;
+
+            humanController.SetPlayerControl(true);
         }
 
         void Update()

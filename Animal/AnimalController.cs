@@ -3,8 +3,9 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
 using Random = UnityEngine.Random;
+using Mutanium.Human;
 
-namespace Mutanium
+namespace Mutanium.Animal
 {
     /// <summary>
     /// Available animal states(idle, walking, chasing, attack or defend).
@@ -42,7 +43,7 @@ namespace Mutanium
         private int interval = 3;
 
         private float defaultAgentSpeed;
-        [SerializeField]
+
         private float currentOutlookDistance;
 
         private Vector3 nextDestination;
@@ -62,7 +63,7 @@ namespace Mutanium
         /// <summary>
         /// Distance from which to start the attack. Must be less or equal than activeDistane.
         /// </summary>
-        public float attackingDistance = 20.0f;
+        public float attackingDistance = 6.5f;
 
         /// <summary>
         /// distance from which to start the attack
@@ -73,15 +74,17 @@ namespace Mutanium
         /// </summary>
         public Relationship relationship;
 
-        /// <summary>
-        /// Animal health level. Ranged [0..1]. If less then 0 animal dies.
-        /// </summary>
-        public float health = 1.0f;
+        public AnimalInfo animal;
 
         /// <summary>
         /// Extention multiplier of the outlook when animal in the attacking state
         /// </summary>
         public float attackingOutlookScale = 1.5f;
+
+        void Awake ()
+        {
+            animal = new AnimalInfo();
+        }
 
         void Start()
         {
@@ -151,8 +154,8 @@ namespace Mutanium
         /// <param name="damage">damage level in scale [0..1]</param>
         public void ReceiveDamage(HumanController human, float damage)
         {
-            health -= damage;
-            if (health <= 0.0f)
+            animal.health -= damage;
+            if (animal.health <= 0.0f)
             {
                 SetState(AnimalState.DYING);
                 return;
@@ -198,7 +201,7 @@ namespace Mutanium
         {
             if (state == currentState)
                 return;
-            if (state != currentState && currentCoroutine != null)
+            if (currentCoroutine != null)
                 StopCoroutine(currentCoroutine);
 
             anim.SetInteger("state", (int)state);
