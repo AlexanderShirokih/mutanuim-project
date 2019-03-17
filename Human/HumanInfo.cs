@@ -1,5 +1,6 @@
 ﻿using System;
 using Random = UnityEngine.Random;
+using UnityEngine;
 
 namespace Mutanium.Human
 {
@@ -35,9 +36,13 @@ namespace Mutanium.Human
                  new ProbablyHumanStateName(HumanStateName.WALKING, 0.5f)
                  };
 
+        public Vector3 position;
+        public Vector3 eulerRotation;
         public Date BirthDate { get; set; }
         public bool IsMen { get; set; }
         public int Age { get; set; }
+        public UniqueId Id { get; set; }
+        public UniqueId AssignedHouse { get; set; }
 
 
         public bool CanDefends() => Age >= 6;

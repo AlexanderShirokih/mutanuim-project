@@ -8,22 +8,24 @@ namespace Mutanium
     [Serializable]
     public class GameSave
     {
+        public static string savePath = "save.dat";
         public float GameTime { get; set; }
+        public int LastUniqueId { get; set; }
 
-        public void SaveGame(GameSave gameSave)
+        public void Save(GameSave gameSave)
         {
             BinaryFormatter bf = new BinaryFormatter();
-            FileStream file = File.Create(Application.persistentDataPath + "/save.dat");
+            FileStream file = File.Create(savePath);
             bf.Serialize(file, gameSave);
             file.Close();
         }
 
-        public static GameSave LoadGame()
+        public static GameSave Load()
         {
-            if (File.Exists(Application.persistentDataPath + "/save.dat"))
+            if (File.Exists(savePath))
             {
                 BinaryFormatter bf = new BinaryFormatter();
-                FileStream file = File.Open(Application.persistentDataPath + "/save.dat", FileMode.Open);
+                FileStream file = File.Open(savePath, FileMode.Open);
                 GameSave gameSave = (GameSave)bf.Deserialize(file);
                 file.Close();
                 return gameSave;
@@ -37,12 +39,12 @@ namespace Mutanium
             {
                 if (Current == null)
                 {
-                    Current = LoadGame();
+                    Current = Load();
                 }
                 return Current;
             }
         }
 
-        public static GameSave Current { get; private set; }
+        public static GameSave Current { get; set; }
     }
 }

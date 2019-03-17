@@ -49,6 +49,7 @@ namespace Mutanium.Human
 
         protected override void OnEnd()
         {
+            Controller.Agent.ResetPath();
             Controller.Agent.enabled = false;
         }
     }

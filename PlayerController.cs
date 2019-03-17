@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-
 using Mutanium.Human;
 
 namespace Mutanium
@@ -9,11 +8,11 @@ namespace Mutanium
         private HumanController humanController;
         private Rigidbody mRigidbody;
 
-        public float rotationSpeed = 5f;
+        public float rotationSpeed = 2f;
 
         private Vector3 moveDir;
 
-        public float speed = 10f;
+        public float speed = 8f;
 
         void Start()
         {
@@ -33,6 +32,11 @@ namespace Mutanium
             moveDir = moveDir.normalized * speed * Time.deltaTime;
 
             mRigidbody.MovePosition(transform.position + moveDir);
+        }
+
+        void OnDestroy()
+        {
+            humanController.SetPlayerControl(false);
         }
     }
 }

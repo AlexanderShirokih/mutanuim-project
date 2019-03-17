@@ -55,7 +55,7 @@ namespace Mutanium
         private float GetTerrainHeightAt(float x, float z)
         {
             //TODO: Temp varaint
-            return 4.0f;
+            return 9.0f;
         }
 
         private void Store()

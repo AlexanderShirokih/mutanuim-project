@@ -8,6 +8,7 @@ namespace Mutanium
     /// Минимальная точность - минута. Одна секунда реального времени - 2 минуты виртуального. Один виртуальный год - 30 дней
     /// </summary>
     /// 
+    [Serializable]
     public class Date
     {
         private const int MINUTES_IN_DAY = 60 * 24;
@@ -36,7 +37,7 @@ namespace Mutanium
         /// Возвращает внутриигровое время в минутах
         /// </summary>
         /// <value>The current time.</value>
-        public float CurrentTime { get; } = 0;
+        public float CurrentTime;
 
         /// <summary>
         /// Возвращает количество минут прошедших с текущей даты до настоящего времени

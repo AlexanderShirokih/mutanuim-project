@@ -100,7 +100,6 @@ namespace Mutanium.Animal
 
         void Update()
         {
-            #region Check for attackers
             // Skip frames for better performance.
             if (Time.frameCount % interval == 0)
             {
@@ -144,7 +143,6 @@ namespace Mutanium.Animal
                 if (agent.enabled && !agent.pathPending && agent.remainingDistance < 2.0f)
                     agent.destination = nextDestination;
             }
-            #endregion
         }
 
         /// <summary>

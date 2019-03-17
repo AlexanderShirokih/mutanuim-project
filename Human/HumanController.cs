@@ -16,12 +16,7 @@ namespace Mutanium.Human
 
         internal NavMeshAgent Agent { get; private set; }
         internal Animator Animator { get; private set; }
-        internal HumanInfo Human { get; private set; }
-
-        void Awake()
-        {
-            Human = new HumanInfo();
-        }
+        internal HumanInfo Human { get; set; }
 
         // Start is called before the first frame update
         void Start()
@@ -39,6 +34,7 @@ namespace Mutanium.Human
         /// <param name="state">New state.</param>
         private void SetState(HumanStateName state)
         {
+            Debug.Log($"Name={transform.name}, State={state}");
             currentHumanState = HumanState.Create(this, state);
             if (currentCoroutine != null)
                 StopCoroutine(currentCoroutine);
@@ -56,12 +52,7 @@ namespace Mutanium.Human
 
         private void LazyUpdate()
         {
-            var newAge = Human.BirthDate.MinutesFromNow() / MINUTES_IN_HUMAN_YEAR;
-            if (Human.Age != newAge)
-            {
-                Human.Age = newAge;
-                OnAgeChanged();
-            }
+            Human.Age = Human.BirthDate.MinutesFromNow() / MINUTES_IN_HUMAN_YEAR;
         }
 
         /// <summary>
@@ -69,16 +60,7 @@ namespace Mutanium.Human
         /// </summary>
         private void OnBirth()
         {
-            Human.BirthDate = new Date();
-            Human.IsMen = RandomUtils.GetRandomBool();
             SetState(HumanStateName.REST);
-        }
-
-        /// <summary>
-        /// Called when unit age was increased.
-        /// </summary>
-        private void OnAgeChanged()
-        {
         }
 
         /// <summary>
@@ -95,7 +77,7 @@ namespace Mutanium.Human
             {
                 SetState(HumanStateName.PLAYER);
             }
-            else if(currentHumanState is PlayHumanState)
+            else if (currentHumanState is PlayHumanState)
             {
                 (currentHumanState as PlayerControlState).Active = false;
             }
