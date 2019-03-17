@@ -17,14 +17,6 @@ namespace Mutanium
 
         void Start()
         {
-            //TODO: temp code
-            if (House == null)
-                House = new HouseInfo
-                {
-                    id = UniqueId.GetNextUniqueId(),
-                    position = transform.position
-                };
-
             StartCoroutine(_LazyCoroutine());
         }
 

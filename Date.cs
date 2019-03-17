@@ -31,7 +31,7 @@ namespace Mutanium
         /// Возвращает текущее внутриигровое время в минутах с начала эпохи
         /// </summary>
         /// <value>The game time.</value>
-        public static float GameTime => GameSave.Instance.GameTime;
+        public static float GameTime => Global.Instance.GameTime;
 
         /// <summary>
         /// Возвращает внутриигровое время в минутах
@@ -61,7 +61,7 @@ namespace Mutanium
         /// </summary>
         public static void UpdateTime()
         {
-            GameSave.Current.GameTime += Time.deltaTime * SCALE_TO_REALTIME;
+            Global.Current.GameTime += Time.deltaTime * SCALE_TO_REALTIME;
         }
     }
 }

@@ -24,7 +24,8 @@ namespace Mutanium.Human
             Agent = GetComponent<NavMeshAgent>();
             Animator = GetComponent<Animator>();
 
-            OnBirth();
+            SetState(Human.NextState);
+
             LazyUpdate();
         }
 
@@ -34,7 +35,7 @@ namespace Mutanium.Human
         /// <param name="state">New state.</param>
         private void SetState(HumanStateName state)
         {
-            Debug.Log($"Name={transform.name}, State={state}");
+            Debug.Log($"Name={transform.name}, State={state} Age={Human.Age}");
             currentHumanState = HumanState.Create(this, state);
             if (currentCoroutine != null)
                 StopCoroutine(currentCoroutine);
@@ -53,14 +54,6 @@ namespace Mutanium.Human
         private void LazyUpdate()
         {
             Human.Age = Human.BirthDate.MinutesFromNow() / MINUTES_IN_HUMAN_YEAR;
-        }
-
-        /// <summary>
-        /// Called when unit was born.
-        /// </summary>
-        private void OnBirth()
-        {
-            SetState(HumanStateName.REST);
         }
 
         /// <summary>

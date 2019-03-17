@@ -7,7 +7,7 @@
 
         public static UniqueId GetNextUniqueId()
         {
-            GameSave save = GameSave.Current;
+            Global save = Global.Current;
             UniqueId hid = new UniqueId
             {
                 id = save.LastUniqueId + 1

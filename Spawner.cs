@@ -31,7 +31,7 @@ namespace Mutanium
             instance.GetComponent<HumanController>().Human = human;
         }
 
-        internal Vector3 RandomSpawningPosition()
+        public Vector3 RandomSpawningPosition()
         {
             Vector3 v = new Vector3();
             float t;

@@ -12,6 +12,9 @@ namespace Mutanium.Human
     [Serializable]
     public class HumanInfo
     {
+        private static readonly ProbablyHumanStateName[] NEWBORN_STATES = {
+                new ProbablyHumanStateName(HumanStateName.REST, 1.0f)
+                };
         private static readonly ProbablyHumanStateName[] BABY_STATES =  {
                  new ProbablyHumanStateName(HumanStateName.IDLE, 0.20f),
                  new ProbablyHumanStateName(HumanStateName.REST, 0.15f),
@@ -52,6 +55,10 @@ namespace Mutanium.Human
         {
             get
             {
+                if (Age == 0)
+                {
+                    return NEWBORN_STATES;
+                }
                 if (Age <= 5)
                 {
                     return BABY_STATES;

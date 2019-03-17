@@ -5,13 +5,13 @@ using System.Xml.Serialization;
 
 using UnityEngine;
 using Mutanium.Human;
-
+ 
 namespace Mutanium
 {
     public class SceneSerializator : MonoBehaviour
     {
         private const string SAVE_FILENAME = "save.xml";
-        private const float AUTOSAVE_PERIOD = 30f;
+        private const float AUTOSAVE_PERIOD = 15f;
         private readonly XmlSerializer SERIALIZER = new XmlSerializer(typeof(SaveFile));
 
         public int levelId;
@@ -20,7 +20,7 @@ namespace Mutanium
 
         void Awake()
         {
-            GameSave.savePath = Application.persistentDataPath + "/save.dat";
+            Global.savePath = Application.persistentDataPath + "/save.dat";
             Load();
         }
 
@@ -36,6 +36,7 @@ namespace Mutanium
                 yield return new WaitForSeconds(AUTOSAVE_PERIOD);
                 Debug.Log("Saving...");
                 Save();
+                Global.Current.Save();
             }
         }
 

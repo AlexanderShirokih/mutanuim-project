@@ -1,39 +1,38 @@
 ﻿using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using System;
-using UnityEngine;
 
 namespace Mutanium
 {
     [Serializable]
-    public class GameSave
+    public class Global
     {
         public static string savePath = "save.dat";
         public float GameTime { get; set; }
         public int LastUniqueId { get; set; }
 
-        public void Save(GameSave gameSave)
+        public void Save()
         {
             BinaryFormatter bf = new BinaryFormatter();
             FileStream file = File.Create(savePath);
-            bf.Serialize(file, gameSave);
+            bf.Serialize(file, this);
             file.Close();
         }
 
-        public static GameSave Load()
+        public static Global Load()
         {
             if (File.Exists(savePath))
             {
                 BinaryFormatter bf = new BinaryFormatter();
                 FileStream file = File.Open(savePath, FileMode.Open);
-                GameSave gameSave = (GameSave)bf.Deserialize(file);
+                Global gameSave = (Global)bf.Deserialize(file);
                 file.Close();
                 return gameSave;
             }
-            return new GameSave();
+            return new Global();
         }
 
-        public static GameSave Instance
+        public static Global Instance
         {
             get
             {
@@ -45,6 +44,6 @@ namespace Mutanium
             }
         }
 
-        public static GameSave Current { get; set; }
+        public static Global Current { get; set; }
     }
 }
