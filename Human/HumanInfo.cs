@@ -12,9 +12,6 @@ namespace Mutanium.Human
     [Serializable]
     public class HumanInfo : UniqueElement
     {
-        private static readonly ProbablyHumanStateName[] NEWBORN_STATES = {
-                new ProbablyHumanStateName(HumanStateName.REST, 1.0f)
-                };
         private static readonly ProbablyHumanStateName[] BABY_STATES =  {
                  new ProbablyHumanStateName(HumanStateName.IDLE, 0.20f),
                  new ProbablyHumanStateName(HumanStateName.REST, 0.15f),
@@ -38,19 +35,77 @@ namespace Mutanium.Human
                  new ProbablyHumanStateName(HumanStateName.REST, 0.3f),
                  new ProbablyHumanStateName(HumanStateName.WALKING, 0.5f)
                  };
+        /// <summary>
+        /// Позиция объекта в пространстве.
+        /// </summary>
+        public Vector3 Position
+        {
+            get
+            {
+                //Обновляем позицию из контроллера
+                if (Controller != null)
+                    _position = Controller.transform.position;
+                return _position;
+            }
+            set
+            {
+                _position = value;
+            }
 
-        public Vector3 position;
-        public Vector3 eulerRotation;
+        }
+        [NonSerialized]
+        private Vector3 _position;
+        /// <summary>
+        /// Поворот в углах Эйлера.
+        /// </summary>
+        public Vector3 EulerRotation
+        {
+            get
+            {
+                //Обновляем поворот из контроллера
+                if (Controller != null)
+                    _eulerRotation = Controller.transform.rotation.eulerAngles;
+                return _eulerRotation;
+            }
+            set => _eulerRotation = value;
+        }
+        [NonSerialized]
+        private Vector3 _eulerRotation;
+        /// <summary>
+        /// Дата рождения.
+        /// </summary>
+        /// <value>The birth date.</value>
         public Date BirthDate { get; set; }
+        /// <summary>
+        /// Пол персонажа.
+        /// <value><c>true</c> если мужской, <c>false</c>  если женский.</value>
         public bool IsMen { get; set; }
+        /// <summary>
+        /// Возраст персонажа.
+        /// </summary>
+        /// <value>Возраст в годах.</value>
         public int Age { get; set; }
-
+        /// <summary>
+        /// Коэфициент усталости. [0..1]
+        /// </summary>
+        public float fatigue;
+        /// <summary>
+        /// Ссылка на привязанный дом.
+        /// </summary>
         public ReferencedId<HouseInfo> AssignedHouse { get; set; }
-
+        /// <summary>
+        /// Ссылка на собственный персонаж
+        /// </summary>
         public ReferencedId<HumanInfo> ReferencedId => new ReferencedId<HumanInfo>
         {
             RefId = Id
         };
+
+        /// <summary>
+        /// Контроллер текущего персонажа
+        /// </summary>
+
+        internal HumanController Controller { get; set; }
 
         public bool CanDefends() => Age >= 6;
         public bool CanAttack() => Age >= 14 && Age <= 65;
@@ -59,10 +114,6 @@ namespace Mutanium.Human
         {
             get
             {
-                if (Age == 0)
-                {
-                    return NEWBORN_STATES;
-                }
                 if (Age <= 5)
                 {
                     return BABY_STATES;

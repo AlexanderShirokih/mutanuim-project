@@ -2,9 +2,11 @@
 using System.IO;
 using System.Collections;
 using System.Xml.Serialization;
+using System.Linq;
 
 using UnityEngine;
 using Mutanium.Human;
+using System;
 
 namespace Mutanium
 {
@@ -47,7 +49,7 @@ namespace Mutanium
             SaveFile save = new SaveFile
             {
                 HouseInfos = GetHouseInfos(),
-                Humans = HumanManager.Instance.GetHumanInfos()
+                Humans = UniqueIdDatabase.FindByType(typeof(HumanInfo)).Cast<HumanInfo>().ToArray()
             };
 
             using (FileStream fs = new FileStream(SAVE_FILENAME, FileMode.Create))
@@ -63,7 +65,7 @@ namespace Mutanium
                 {
                     SaveFile save = (SaveFile)SERIALIZER.Deserialize(fs);
                     SetHouseInfos(save.HouseInfos);
-                    HumanManager.Instance.SetHumanInfos(save.Humans);
+                    SetHumanInfos(save.Humans);
                 }
         }
 
@@ -81,13 +83,19 @@ namespace Mutanium
 
         private void SetHouseInfos(HouseInfo[] houseInfos)
         {
-            if (houseInfos.Length != 0)
+            foreach (HouseInfo house in houseInfos)
             {
-                foreach (HouseInfo house in houseInfos)
-                {
-                    if (house == null) continue;
-                    spawner.SpawnHouse(house);
-                }
+                if (house == null) continue;
+                spawner.SpawnHouse(house);
+            }
+        }
+
+        private void SetHumanInfos(HumanInfo[] humans)
+        {
+            foreach (var human in humans)
+            {
+                if (human == null) continue;
+                spawner.SpawnHuman(human);
             }
         }
     }

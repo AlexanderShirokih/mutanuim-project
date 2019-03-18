@@ -9,6 +9,7 @@ namespace Mutanium
 {
     public class HouseController : MonoBehaviour
     {
+        private Spawner spawner;
         private const float LAZY_UPDATE_PERIOD = 4f;
 
         public HouseInfo House { get; set; }
@@ -17,6 +18,7 @@ namespace Mutanium
 
         void Start()
         {
+            spawner = GameObject.Find("Spawner").GetComponent<Spawner>();
             StartCoroutine(_LazyCoroutine());
         }
 
@@ -31,34 +33,42 @@ namespace Mutanium
 
         void OnLazyUpdate()
         {
-            Debug.Log("LastUniqueId =" + Global.Instance.LastUniqueId);
             if (House.humans.Count < maxHumanCapacity)
             {
                 //TODO: Пересмотреть алогоритм спавнинга
                 //Определить когда спавнить новых humans
 
                 //Сперва заселяем жителей без домов
-                var query = from HumanInfo human in HumanManager.Instance.GetHumanList()
-                            where human.AssignedHouse == null
-                            select human;
-                HumanInfo unsetted = query.FirstOrDefault();
+                HumanInfo unsetted = UniqueIdDatabase.FindByType(typeof(HumanInfo)).Cast<HumanInfo>().FirstOrDefault(h => h.AssignedHouse == null);
                 if (unsetted != null)
-                    AddHuman(unsetted);
+                {
+                    House.humans.Add(unsetted.ReferencedId);
+                    unsetted.AssignedHouse = House.ReferencedId;
+                }
                 else if (RandomUtils.GetRandomBool())
                 {
-
-                    Debug.Log("Spawn! Humans.Count = " + House.humans.Count);
                     //Если жителей без домов нет, то спавним нового жителя
-                    HumanInfo human = HumanManager.Instance.Spawn();
-                    AddHuman(human);
+                    SpawnHuman();
                 }
             }
         }
 
-        private void AddHuman(HumanInfo hi)
+        private void SpawnHuman()
         {
-            hi.AssignedHouse = House.ReferencedId;
-            House.humans.Add(hi.ReferencedId);
+            float rad = MeasurementUtils.GetModelRadius(gameObject);
+            Vector3 spawnPosition = transform.position + (transform.rotation * Vector3.forward * rad);
+
+            HumanInfo human = new HumanInfo
+            {
+                BirthDate = new Date(),
+                IsMen = RandomUtils.GetRandomBool(),
+                EulerRotation = Vector3.zero,
+                Position = spawnPosition,
+                AssignedHouse = House.ReferencedId
+            };
+            spawner.SpawnHuman(human);
+
+            House.humans.Add(human.ReferencedId);
         }
     }
 }

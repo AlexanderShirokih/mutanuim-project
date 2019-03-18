@@ -13,11 +13,6 @@ namespace Mutanium
         public GameObject[] humanTypes;
         public Transform playersRoot;
 
-        void Awake()
-        {
-            HumanManager.Instance.Spawner = this;
-        }
-
         public void SpawnHouse(HouseInfo house)
         {
             GameObject housePrefab = houseTypes[house.type];
@@ -27,8 +22,10 @@ namespace Mutanium
 
         public void SpawnHuman(HumanInfo human)
         {
-            GameObject instance = Instantiate(humanTypes[0], human.position, Quaternion.Euler(human.eulerRotation), playersRoot);
-            instance.GetComponent<HumanController>().Human = human;
+            GameObject instance = Instantiate(humanTypes[0], human.Position, Quaternion.Euler(human.EulerRotation), playersRoot);
+            HumanController controller = instance.GetComponent<HumanController>();
+            controller.Human = human;
+            human.Controller = controller;
         }
 
         public Vector3 RandomSpawningPosition()

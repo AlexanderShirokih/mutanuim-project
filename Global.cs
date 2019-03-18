@@ -1,8 +1,6 @@
 ﻿using System.IO;
-using System.Collections;
 using System.Xml.Serialization;
 using System;
-using UnityEngine;
 
 namespace Mutanium
 {
@@ -26,7 +24,6 @@ namespace Mutanium
         {
             if (File.Exists(savePath))
             {
-                Debug.Log("LoadingGlobal Settings...");
                 XmlSerializer xmlSerializer = new XmlSerializer(typeof(Global));
                 FileStream file = File.Open(savePath, FileMode.Open);
                 Global gameSave = (Global)xmlSerializer.Deserialize(file);

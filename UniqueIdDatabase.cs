@@ -1,4 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Linq;
+using System.Collections.Generic;
+using Mutanium.Human;
 
 namespace Mutanium
 {
@@ -8,7 +11,6 @@ namespace Mutanium
 
         private UniqueIdDatabase()
         { }
-
 
         public static UniqueIdDatabase Instance { get; } = new UniqueIdDatabase();
 
@@ -31,6 +33,14 @@ namespace Mutanium
         public static void Clear()
         {
             Instance.uniqueIds.Clear();
+        }
+
+        public static int Size => Instance.uniqueIds.Count;
+
+        public static IEnumerable<UniqueElement> FindByType(Type type)
+        {
+            return Instance.uniqueIds.Where(t => type.IsInstanceOfType(t.Value))
+                .Select(t => t.Value);
         }
     }
 }

@@ -28,6 +28,17 @@ namespace Mutanium.Human
 
             LazyUpdate();
         }
+        public void Update()
+        {
+            // Skip frames for better performance.
+            if (Time.frameCount % LAZY_SKIP_FRAMES == 0)
+                LazyUpdate();
+        }
+
+        private void LazyUpdate()
+        {
+            Human.Age = Human.BirthDate.MinutesFromNow() / MINUTES_IN_HUMAN_YEAR;
+        }
 
         /// <summary>
         /// Sets the unit state.
@@ -44,24 +55,44 @@ namespace Mutanium.Human
             Animator.SetInteger("state", (int)state);
         }
 
-        public void Update()
-        {
-            // Skip frames for better performance.
-            if (Time.frameCount % LAZY_SKIP_FRAMES == 0)
-                LazyUpdate();
-        }
 
-        private void LazyUpdate()
-        {
-            Human.Age = Human.BirthDate.MinutesFromNow() / MINUTES_IN_HUMAN_YEAR;
-        }
 
         /// <summary>
         /// Chooses random state among available states.
         /// </summary>
         private void OnStateEnded()
         {
-            SetState(Human.NextState);
+            SetNextState();
+        }
+
+        private void SetNextState()
+        {
+            if (currentStateName != HumanStateName.REST && IsRestStateNeeded())
+            {
+                SetState(HumanStateName.REST);
+            }
+
+            HumanStateName nextState = 0;
+            var availAttepmts = 100;
+
+            while (availAttepmts > 0)
+            {
+                availAttepmts--;
+                nextState = Human.NextState;
+                if (nextState != currentStateName)
+                    break;
+            }
+
+            SetState(nextState);
+        }
+
+        /// <summary>
+        /// Определят нуждается ли персонаж в срочном отдыхе.
+        /// </summary>
+        /// <returns><c>true</c>, если усталость персонажа выше 70%, <c>false</c> иначе.</returns>
+        public bool IsRestStateNeeded()
+        {
+            return Human.fatigue >= 0.7f;
         }
 
         public void SetPlayerControl(bool useControl)

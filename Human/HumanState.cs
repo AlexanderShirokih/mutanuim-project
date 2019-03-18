@@ -19,7 +19,7 @@ namespace Mutanium.Human
         protected abstract void OnEnd();
 
 
-        public IEnumerator UpdateState(Action onStateEnded)
+        public virtual IEnumerator UpdateState(Action onStateEnded)
         {
             OnStart();
             yield return new WaitUntil(OnUpdate);
