@@ -31,6 +31,7 @@ namespace Mutanium
 
         void OnLazyUpdate()
         {
+            Debug.Log("LastUniqueId =" + Global.Instance.LastUniqueId);
             if (House.humans.Count < maxHumanCapacity)
             {
                 //TODO: Пересмотреть алогоритм спавнинга
@@ -45,6 +46,8 @@ namespace Mutanium
                     AddHuman(unsetted);
                 else if (RandomUtils.GetRandomBool())
                 {
+
+                    Debug.Log("Spawn! Humans.Count = " + House.humans.Count);
                     //Если жителей без домов нет, то спавним нового жителя
                     HumanInfo human = HumanManager.Instance.Spawn();
                     AddHuman(human);
@@ -54,8 +57,8 @@ namespace Mutanium
 
         private void AddHuman(HumanInfo hi)
         {
-            hi.AssignedHouse = House.id;
-            House.humans.Add(hi.Id);
+            hi.AssignedHouse = House.ReferencedId;
+            House.humans.Add(hi.ReferencedId);
         }
     }
 }

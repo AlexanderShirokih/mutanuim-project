@@ -5,7 +5,7 @@ using System.Xml.Serialization;
 
 using UnityEngine;
 using Mutanium.Human;
- 
+
 namespace Mutanium
 {
     public class SceneSerializator : MonoBehaviour
@@ -20,7 +20,9 @@ namespace Mutanium
 
         void Awake()
         {
-            Global.savePath = Application.persistentDataPath + "/save.dat";
+            //Application.persistentDataPath +"/save.dat";
+            Global.LoadOrCreate("game.xml");
+            UniqueIdDatabase.Clear();
             Load();
         }
 
@@ -36,7 +38,7 @@ namespace Mutanium
                 yield return new WaitForSeconds(AUTOSAVE_PERIOD);
                 Debug.Log("Saving...");
                 Save();
-                Global.Current.Save();
+                Global.Instance.Save();
             }
         }
 
@@ -79,7 +81,6 @@ namespace Mutanium
 
         private void SetHouseInfos(HouseInfo[] houseInfos)
         {
-            Debug.Log($"Len:{houseInfos.Length }");
             if (houseInfos.Length != 0)
             {
                 foreach (HouseInfo house in houseInfos)

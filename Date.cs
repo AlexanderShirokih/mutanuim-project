@@ -61,7 +61,7 @@ namespace Mutanium
         /// </summary>
         public static void UpdateTime()
         {
-            Global.Current.GameTime += Time.deltaTime * SCALE_TO_REALTIME;
+            Global.Instance.GameTime += Time.deltaTime * SCALE_TO_REALTIME;
         }
     }
 }

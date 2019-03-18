@@ -1,19 +1,29 @@
-﻿namespace Mutanium
+﻿using System;
+
+namespace Mutanium
 {
-    [System.Serializable]
+    [Serializable]
     public class UniqueId
     {
-        public int id;
+        private int _id;
 
-        public static UniqueId GetNextUniqueId()
+        public int UId
         {
-            Global save = Global.Current;
-            UniqueId hid = new UniqueId
+            get
             {
-                id = save.LastUniqueId + 1
-            };
-            save.LastUniqueId = hid.id;
-            return hid;
+                if (_id == 0)
+                    _id = GetNextId();
+                return _id;
+            }
+            set => _id = value;
+        }
+
+        private static int GetNextId()
+        {
+            Global save = Global.Instance;
+            var id = save.LastUniqueId + 1;
+            save.LastUniqueId = id;
+            return id;
         }
     }
 }

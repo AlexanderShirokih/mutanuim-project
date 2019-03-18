@@ -1,49 +1,51 @@
 ﻿using System.IO;
-using System.Runtime.Serialization.Formatters.Binary;
+using System.Collections;
+using System.Xml.Serialization;
 using System;
+using UnityEngine;
 
 namespace Mutanium
 {
     [Serializable]
     public class Global
     {
-        public static string savePath = "save.dat";
+        [NonSerialized]
+        public string savePath = "save.dat";
         public float GameTime { get; set; }
         public int LastUniqueId { get; set; }
 
         public void Save()
         {
-            BinaryFormatter bf = new BinaryFormatter();
+            XmlSerializer xmlSerializer = new XmlSerializer(typeof(Global));
             FileStream file = File.Create(savePath);
-            bf.Serialize(file, this);
+            xmlSerializer.Serialize(file, this);
             file.Close();
         }
 
-        public static Global Load()
+        public static void LoadOrCreate(string savePath)
         {
             if (File.Exists(savePath))
             {
-                BinaryFormatter bf = new BinaryFormatter();
+                Debug.Log("LoadingGlobal Settings...");
+                XmlSerializer xmlSerializer = new XmlSerializer(typeof(Global));
                 FileStream file = File.Open(savePath, FileMode.Open);
-                Global gameSave = (Global)bf.Deserialize(file);
+                Global gameSave = (Global)xmlSerializer.Deserialize(file);
                 file.Close();
-                return gameSave;
+                Instance = gameSave;
             }
-            return new Global();
-        }
-
-        public static Global Instance
-        {
-            get
+            else
             {
-                if (Current == null)
-                {
-                    Current = Load();
-                }
-                return Current;
+                Instance = new Global();
             }
+
+            Instance.savePath = savePath;
         }
 
-        public static Global Current { get; set; }
+        public static Global Instance { get; private set; } = new Global();
+
+        public static void SetCurrent(Global global)
+        {
+            Instance = global;
+        }
     }
 }

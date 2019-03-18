@@ -10,7 +10,7 @@ namespace Mutanium.Human
     };
 
     [Serializable]
-    public class HumanInfo
+    public class HumanInfo : UniqueElement
     {
         private static readonly ProbablyHumanStateName[] NEWBORN_STATES = {
                 new ProbablyHumanStateName(HumanStateName.REST, 1.0f)
@@ -44,9 +44,13 @@ namespace Mutanium.Human
         public Date BirthDate { get; set; }
         public bool IsMen { get; set; }
         public int Age { get; set; }
-        public UniqueId Id { get; set; }
-        public UniqueId AssignedHouse { get; set; }
 
+        public ReferencedId<HouseInfo> AssignedHouse { get; set; }
+
+        public ReferencedId<HumanInfo> ReferencedId => new ReferencedId<HumanInfo>
+        {
+            RefId = Id
+        };
 
         public bool CanDefends() => Age >= 6;
         public bool CanAttack() => Age >= 14 && Age <= 65;

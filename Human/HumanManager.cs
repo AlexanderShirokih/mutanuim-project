@@ -43,7 +43,6 @@ namespace Mutanium.Human
             {
                 BirthDate = new Date(),
                 IsMen = RandomUtils.GetRandomBool(),
-                Id = UniqueId.GetNextUniqueId(),
                 eulerRotation = Vector3.zero,
                 position = Spawner.RandomSpawningPosition()
             };
