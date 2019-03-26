@@ -7,7 +7,6 @@ namespace Mutanium.Human
         private const float IDLE_LENGTH_MIN = 10f;
         private const float IDLE_LENGTH_MAX = 20f;
 
-
         private float length;
         private float time;
 

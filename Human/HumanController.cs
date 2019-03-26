@@ -13,7 +13,7 @@ namespace Mutanium.Human
         private HumanState currentHumanState;
 
         public Relationship relationship;
-
+        public Renderer meshRenderer;
         internal NavMeshAgent Agent { get; private set; }
         internal Animator Animator { get; private set; }
         internal HumanInfo Human { get; set; }
@@ -38,6 +38,8 @@ namespace Mutanium.Human
         private void LazyUpdate()
         {
             Human.Age = Human.BirthDate.MinutesFromNow() / MINUTES_IN_HUMAN_YEAR;
+
+
         }
 
         /// <summary>

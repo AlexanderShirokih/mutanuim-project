@@ -63,7 +63,7 @@ namespace Mutanium.Human
                 });
 
                 // Исчезаем
-                Renderer renderer = Controller.gameObject.GetComponent<Renderer>();
+                Renderer renderer = Controller.meshRenderer;
                 renderer.enabled = false;
                 agent.ResetPath();
 
